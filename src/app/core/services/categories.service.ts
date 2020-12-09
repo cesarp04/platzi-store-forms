@@ -1,8 +1,9 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
-import { environment } from '../../../environments/environment';
-import { Category } from '../models/category.model';
+import { Category } from './../models/category.model';
+
+import { environment } from './../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -19,9 +20,15 @@ export class CategoriesService {
   }
 
   updateCategory(id: string, data: Partial<Category>) {
-    return this.http.put<Category>(
+    return this.http.post<Category>(
       `${environment.url_api}/categories/${id}`,
       data
     );
+  }
+
+  checkCategory(name: string) {
+    return this.http.post(`${environment.url_api}/categories/availability`, {
+      name,
+    });
   }
 }
