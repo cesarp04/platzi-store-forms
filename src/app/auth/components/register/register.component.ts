@@ -60,6 +60,7 @@ export class RegisterComponent implements OnInit {
       } else {
         this.companyNameField.setValidators(null);
       }
+      // actualice el valor y lo valide en caso de esta reactividad
       this.companyNameField.updateValueAndValidity();
     });
   }
