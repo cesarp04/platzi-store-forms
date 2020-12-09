@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
+import { CategoriesService } from 'src/app/core/services/categories.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-category-form',
@@ -9,7 +11,11 @@ import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 export class CategoryFormComponent implements OnInit {
   form: FormGroup;
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private categoriesService: CategoriesService,
+    private router: Router
+  ) {
     this.builForm();
   }
 
@@ -28,5 +34,21 @@ export class CategoryFormComponent implements OnInit {
 
   get imageField() {
     return this.form.get('image');
+  }
+
+  save() {
+    if (this.form.valid) {
+      this.createCategory();
+    } else {
+      this.form.markAllAsTouched();
+    }
+  }
+
+  private createCategory() {
+    const data = this.form.value;
+    this.categoriesService.createCategory(data).subscribe((rta) => {
+      console.log(rta);
+      this.router.navigate(['/admin/categories']);
+    });
   }
 }
